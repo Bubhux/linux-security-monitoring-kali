@@ -29,10 +29,55 @@ conky.config = {
     color2 = 'AAAAAA',
     color3 = '888888',
     color4 = 'EF5A29',
-    lua_load = '~/Conky/',
+    lua_load = '~/Conky/conky_system.lua',
     lua_draw_hook_post = 'main',
 }
 
 conky.text = [[
+${voffset 40}
+${voffset 5}${goto 190}${color1}${font DejaVu Sans:size=6}${time %A} ${color4}${font DejaVu Sans:size=6}${time %e}
+${goto 190}${color2}${font DejaVu Sans:size=6}${time %b} ${color3}${font DejaVu Sans:size=6}${time %Y}
 
+${voffset 90}
+${goto 195}${font DejaVu Sans:size=6}${color}PROCESSUS
+${goto 195}${font DejaVu Sans:size=6}${color1}${top name 1}${alignr}${top cpu 1}%
+${goto 195}${font DejaVu Sans:size=6}${color2}${top name 2}${alignr}${top cpu 2}%
+${goto 195}${font DejaVu Sans:size=6}${color3}${top name 3}${alignr}${top cpu 3}%
+
+${voffset 40}
+${goto 195}${font DejaVu Sans:size=6}${color}MEM
+${goto 195}${font DejaVu Sans:size=6}${color1}${top_mem name 1}${alignr}${top_mem mem 1}%
+${goto 195}${font DejaVu Sans:size=6}${color2}${top_mem name 2}${alignr}${top_mem mem 2}%
+${goto 195}${font DejaVu Sans:size=6}${color3}${top_mem name 3}${alignr}${top_mem mem 3}%
+
+${voffset 30}
+${goto 195}${font DejaVu Sans:size=6}${color}DISKS
+${goto 195}${font DejaVu Sans:size=6}${color}used: ${alignr}${fs_used /home} /home
+${goto 195}${font DejaVu Sans:size=6}${color}used: ${alignr}${fs_used /} /
+
+${voffset 2}
+${goto 165}${font DejaVu Sans:size=7}${color3}NET
+${goto 165}${font DejaVu Sans:size=6}${color1}${if_up eth0}eth : ${alignr}${addr eth0}${endif}
+${goto 165}${font DejaVu Sans:size=6}${color1}${if_up wlan0}wifi : ${alignr}${addr wlan0}${endif}
+${goto 165}${font DejaVu Sans:size=6}${color}Down : ${alignr}${downspeed wlan0} k/s
+${goto 165}${font DejaVu Sans:size=6}${color}Up : ${alignr}${upspeed wlan0} k/s
+
+${voffset 2}
+${goto 165}${font DejaVu Sans:size=6}${color}Open ports: ${alignr}${color2}${offset -7}${tcp_portmon 1 65535 count}
+${goto 155}${font DejaVu Sans:size=6}${color}${offset 10}IP${alignr -1}DPORT
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip  0}${alignr 1}${tcp_portmon 1 65535 rport  0}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip  1}${alignr 1}${tcp_portmon 1 65535 rport  1}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip  2}${alignr 1}${tcp_portmon 1 65535 rport  2}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip  3}${alignr 1}${tcp_portmon 1 65535 rport  3}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip  4}${alignr 1}${tcp_portmon 1 65535 rport  4}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip  5}${alignr 1}${tcp_portmon 1 65535 rport  5}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip  6}${alignr 1}${tcp_portmon 1 65535 rport  6}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip  7}${alignr 1}${tcp_portmon 1 65535 rport  7}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip  8}${alignr 1}${tcp_portmon 1 65535 rport  8}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip  9}${alignr 1}${tcp_portmon 1 65535 rport  9}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip 10}${alignr 1}${tcp_portmon 1 65535 rport 10}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip 11}${alignr 1}${tcp_portmon 1 65535 rport 11}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip 12}${alignr 1}${tcp_portmon 1 65535 rport 12}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip 13}${alignr 1}${tcp_portmon 1 65535 rport 13}
+${goto 165}${font DejaVu Sans:size=6}${color1}${tcp_portmon 1 65535 rip 14}${alignr 1}${tcp_portmon 1 65535 rport 14}
 ]]
