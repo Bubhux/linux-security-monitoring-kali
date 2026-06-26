@@ -40,5 +40,71 @@ conky.config = {
 }
 
 conky.text = [[
+${voffset 1}${color1} SYSTEME ${hr 1}
+${voffset 1}
+${color2}$alignc$nodename - $sysname $kernel
+${voffset 1}
+${color2}Uptime:$color $uptime $alignr${color2}Charge:$color $loadavg
+${color2}Processus:$color $processes $alignr${color2}En cours:$color $running_processes
+${color2}RAM :$color$mem/$memmax - $memperc% ${color3}${membar}
+${color2}Swap :$color$swap/$swapmax - $swapperc% ${color3}${swapbar}
 
+${color1} CPU ${hr 1}
+${voffset 1}
+${color2}CPU1 : $color${cpu cpu1}% ${color3}${cpubar cpu1}
+${color2}CPU2 : $color${cpu cpu2}% ${color3}${cpubar cpu2}
+${color2}${cpugraph 15,200 808080 696969}
+
+${color1} RESEAU ${hr 1}
+${voffset 1}
+${color2}Interface wlan0 :$color ${addr wlan0}
+${color2}Interface eth0 :$color ${addr eth0}
+${color2}IP Publique :$color ${execi 1800 ~/Conky/get_ip.sh}
+
+${color2}Download :$color ${downspeed wlan0} k/s ${alignr}${totaldown wlan0}
+${downspeedgraph wlan0 15,200 808080 696969}
+${color2}Upload :$color ${upspeed wlan0} k/s ${alignr}${totalup wlan0}
+${upspeedgraph wlan0 15,200 808080 696969}
+
+${color1} DISQUES ${hr 1}
+${voffset 1}
+${color2}Systeme :$color ${fs_free /}/${fs_size /} $alignr${fs_used_perc /}%
+${color3}${fs_bar /}
+${color2}Home :$color ${fs_free /home/bubhux}/${fs_size /home/bubhux} $alignr${fs_used_perc /home/bubhux}%
+${color3}${fs_bar /home/bubhux}
+
+${color2}Disque :$color ${diskio_read} lecture ${alignr}${diskio_write} ecriture
+${color2}${diskiograph_read 18,98 808080 696969} ${alignr}${diskiograph_write 18,98 808080 696969}
+
+${color1} TEMPERATURES ${hr 1}
+${voffset 1}
+${color2}CPU :$alignr$color ${acpitemp}°C
+${color2}Core 0 :$alignr${exec sensors 2>/dev/null | grep 'Core 0' | awk '{print $3}'}
+${color2}Core 1 :$alignr${exec sensors 2>/dev/null | grep 'Core 1' | awk '{print $3}'}
+${color2}Package :$alignr${exec sensors 2>/dev/null | grep 'Package' | awk '{print $4}'}
+${color2}Ventilateur :$alignr${exec sensors 2>/dev/null | grep -i 'fan' | awk '{print $2}' | head -1} RPM
+${if_match ${acpitemp} > 75}${color3}Alerte : CPU chaud !${color}${endif}
+
+${color1} BATTERIE ${hr 1}
+${voffset 1}
+${color2}Niveau :$alignr$color ${battery_percent BAT0}%
+${color2}${battery_bar BAT0}
+${color2}État :$alignr$color ${exec sh -c 'status=$(cat /sys/class/power_supply/BAT0/status); case $status in "Charging") echo "En charge";; "Not charging") echo "Décharge";; "Full") echo "Pleine";; *) echo "$status";; esac'} ${battery_time BAT0}
+${if_match ${battery_percent BAT0} <= 15}${color3}└─ Batterie faible${color}${endif}
+
+${color1} TOP CPU ${hr 1}
+${voffset 1}
+${color2}1. ${top name 1} $alignr${top cpu 1}%
+${color2}2. ${top name 2} $alignr${top cpu 2}%
+${color2}3. ${top name 3} $alignr${top cpu 3}%
+${color2}4. ${top name 4} $alignr${top cpu 4}%
+${color2}5. ${top name 5} $alignr${top cpu 5}%
+
+${color1} TOP MEMOIRE ${hr 1}
+${voffset 1}
+${color2}1. ${top_mem name 1} $alignr${top_mem mem 1}%
+${color2}2. ${top_mem name 2} $alignr${top_mem mem 2}%
+${color2}3. ${top_mem name 3} $alignr${top_mem mem 3}%
+${color2}4. ${top_mem name 4} $alignr${top_mem mem 4}%
+${color2}5. ${top_mem name 5} $alignr${top_mem mem 5}%
 ]]
