@@ -1,7 +1,7 @@
 conky.config = {
     background = true,
     own_window = true,
-    own_window_type = 'normal',
+    own_window_type = 'desktop',
     own_window_argb_visual = true,
     own_window_argb_value = 0,
     own_window_transparent = false,
@@ -16,7 +16,7 @@ conky.config = {
     minimum_width = 200,
     minimum_height = 500,
     gap_x = 8,
-    gap_y = 45,
+    gap_y = 8,
     draw_graph_borders = true,
     draw_shades = false,
     draw_outline = false,
@@ -59,7 +59,7 @@ ${color1} RESEAU ${hr 1}
 ${voffset 1}
 ${color2}Interface wlan0 :$color ${addr wlan0}
 ${color2}Interface eth0 :$color ${addr eth0}
-${color2}IP Publique :$color ${execi 1800 ~/Conky/get_ip.sh}
+${color2}IP Publique :$color ${execi 1800 ~/Conky/Scripts/get_ip.sh}
 
 ${color2}Download :$color ${downspeed wlan0} k/s ${alignr}${totaldown wlan0}
 ${downspeedgraph wlan0 15,200 808080 696969}
@@ -70,8 +70,8 @@ ${color1} DISQUES ${hr 1}
 ${voffset 1}
 ${color2}Systeme :$color ${fs_free /}/${fs_size /} $alignr${fs_used_perc /}%
 ${color3}${fs_bar /}
-${color2}Home :$color ${fs_free /home/bubhux}/${fs_size /home/bubhux} $alignr${fs_used_perc /home/bubhux}%
-${color3}${fs_bar /home/bubhux}
+${color2}Home :$color ${execp echo "\${fs_free /home/$USER}/\${fs_size /home/$USER} \$alignr\${fs_used_perc /home/$USER}%"}
+${color3}${execp echo "\${fs_bar /home/$USER}"}
 
 ${color2}Disque :$color ${diskio_read} lecture ${alignr}${diskio_write} ecriture
 ${color2}${diskiograph_read 18,98 808080 696969} ${alignr}${diskiograph_write 18,98 808080 696969}
