@@ -11,7 +11,7 @@ conky.config = {
     minimum_height = 80,
     maximum_width = 530,
     own_window = true,
-    own_window_type = 'normal',
+    own_window_type = 'desktop',
     own_window_argb_visual = true,
     own_window_argb_value = 0,
     own_window_transparent = false,
@@ -31,10 +31,89 @@ conky.config = {
     color3 = '888888',
     color4 = 'EF5A29',
     color5 = '1E8449',
-    lua_load = '~/Conky/',
+    lua_load = '~/Conky/Scripts/conky_security.lua',
     lua_draw_hook_pre = 'main',
 }
 
 conky.text = [[
+${voffset 1}
+${goto 10}${font DejaVu Sans:size=7}${color3}SECURITY${font}
 
+${goto 10}${font DejaVu Sans:size=6}${color}CONNEXIONS ACTIVES:
+${goto 10}${color2}Total: ${color1}${exec ss -tn state established | tail -n +2 | wc -l}
+${voffset 1}
+${goto 10}${color2}SSH(22): ${color1}${exec ss -tn state established | grep ':22' | wc -l}
+${voffset 1}
+${goto 10}${color2}HTTP(80): ${color1}${exec ss -tn state established | grep ':80' | wc -l}
+${voffset 1}
+${goto 10}${color2}HTTPS(443): ${color1}${exec ss -tn state established | grep ':443' | wc -l}
+
+${goto 10}${voffset 10}${color2}Gateway IP: ${color1}${exec ip route | grep default | awk '{print $3}'}
+${goto 10}${color2}Gateway: ${execpi 10 ~/Conky/Scripts/gateway_check.sh}
+${goto 10}${color2}Internet: ${execpi 10 ~/Conky/Scripts/internet_check.sh}
+
+${if_match ${exec sh -c "ss -tn state established | grep ':22' | wc -l"} > 5}${goto 10}${color4}⚠ SSH Multi${endif}
+${if_match ${exec sh -c "ss -tn state established | grep ':80' | wc -l"} > 10}${goto 10}${color4}⚠ HTTP elevé${endif}
+${if_match ${exec sh -c "ss -tn state established | grep ':443' | wc -l"} > 10}${goto 10}${color4}⚠ HTTPS elevé${endif}
+
+${voffset 1}
+${goto 150}${voffset -195}${font DejaVu Sans:size=6}${color}BANDE PASSANTE:
+${goto 150}${color2}Interface: ${color1}${if_up wlan0}wlan0${else}${if_up eth0}eth0${else}aucune${endif}${endif}
+${goto 150}${voffset 3}${color2}↓ Download: ${color1}${if_up wlan0}${downspeed wlan0}${else}${if_up eth0}${downspeed eth0}${else}0${endif}${endif} k/s
+
+${goto 150}${voffset 3}${color2}↑ Upload: ${color1}${if_up wlan0}${upspeed wlan0}${else}${if_up eth0}${upspeed eth0}${else}0${endif}${endif} k/s
+${voffset 1}
+
+${goto 150}${font DejaVu Sans:size=6}${color}FLUX RESEAU:
+${goto 150}${color2}IPv4: ${color1}${if_up wlan0}${addr wlan0}${else}${if_up eth0}${addr eth0}${else}Non connecté${endif}${endif}
+${if_up wlan0}
+${goto 150}${voffset 1}${downspeedgraph wlan0 12,115 888888 888888}
+${goto 150}${voffset -5}${upspeedgraph wlan0 12,115 888888 888888}
+${else}${if_up eth0}
+${goto 150}${voffset 1}${downspeedgraph eth0 12,115 888888 888888}
+${goto 150}${voffset -5}${upspeedgraph eth0 12,115 888888 888888}
+${else}
+${goto 150}${voffset 1}${color4}Aucun graphique disponible
+${endif}${endif}
+
+${voffset -25}
+${goto 300}${voffset -155}${font DejaVu Sans:size=6}${color}ARP TABLE:
+${goto 300}${color2}Entrees: ${color1}${execpi 10 ip neigh show 2>/dev/null | grep -v 'INCOMPLETE' | grep -c '^'}
+
+${voffset 1}
+${goto 300}${font DejaVu Sans:size=6}${color}SSH FAILED:
+${goto 300}${color2}5 min: ${color1}${execpi 300 grep "Failed password" /var/log/auth.log 2>/dev/null | tail -50 | wc -l}
+
+${voffset 1}
+${goto 300}${font DejaVu Sans:size=6}${color}LISTENING PORTS:
+${goto 300}${color2}TCP (services): ${color1}${exec ss -tln 2>/dev/null | tail -n +2 | wc -l}
+${goto 300}${color2}UDP (services): ${color1}${exec ss -uln 2>/dev/null | tail -n +2 | wc -l}
+${goto 300}${font DejaVu Sans:size=4}${color1}${exec ss -tln 2>/dev/null | tail -n +2 | head -3 | awk '{print $4}' | cut -d':' -f2 | tr '\n' ' '}
+
+${if_match ${exec ss -tln 2>/dev/null | tail -n +2 | wc -l} == 0}${goto 300}${font DejaVu Sans:size=6}${color4}(aucun service TCP)${endif}
+
+${goto 300}${font DejaVu Sans:size=6}${color}FIREWALL:
+${if_match "${exec systemctl is-active nftables}" == "active"}
+${goto 298}${color5}✓ nftables: ACTIF
+${else}
+${goto 298}${color4}✗ nftables: INACTIF
+${endif}
+
+${voffset -17}
+${goto 430}${voffset -193}${font DejaVu Sans:size=6}${color}TOP IPS:
+
+${goto 430}${color1}Entrantes (local):${color}
+${goto 430}${color3}${exec ~/Conky/Scripts/ips_incoming.sh | sed -n '1p'}
+${goto 430}${color3}${exec ~/Conky/Scripts/ips_incoming.sh | sed -n '2p'}
+${goto 430}${color3}${exec ~/Conky/Scripts/ips_incoming.sh | sed -n '3p'}
+${goto 430}${color3}${exec ~/Conky/Scripts/ips_incoming.sh | sed -n '4p'}
+${goto 430}${color3}${exec ~/Conky/Scripts/ips_incoming.sh | sed -n '5p'}
+
+${goto 430}${color1}Sortantes (distantes):${color}
+${goto 430}${color3}${exec ~/Conky/Scripts/ips_outgoing.sh | sed -n '1p'}
+${goto 430}${color3}${exec ~/Conky/Scripts/ips_outgoing.sh | sed -n '2p'}
+${goto 430}${color3}${exec ~/Conky/Scripts/ips_outgoing.sh | sed -n '3p'}
+${goto 430}${color3}${exec ~/Conky/Scripts/ips_outgoing.sh | sed -n '4p'}
+${goto 430}${color3}${exec ~/Conky/Scripts/ips_outgoing.sh | sed -n '5p'}
+${voffset -400}
 ]]
