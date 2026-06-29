@@ -59,7 +59,7 @@ ${color1} RESEAU ${hr 1}
 ${voffset 1}
 ${color2}Interface wlan0 :$color ${addr wlan0}
 ${color2}Interface eth0 :$color ${addr eth0}
-${color2}IP Publique :$color ${execi 1800 ~/Conky/Scripts/get_ip.sh}
+${color2}IP Publique :$color ${execi 60 ~/Conky/Scripts/get_ip.sh}
 
 ${color2}Download :$color ${downspeed wlan0} k/s ${alignr}${totaldown wlan0}
 ${downspeedgraph wlan0 15,200 808080 696969}
