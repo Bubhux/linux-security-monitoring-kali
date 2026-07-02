@@ -1,0 +1,32 @@
+conky.config = {
+    background = true,
+    update_interval = 0.5,
+    total_run_times = 0,
+    double_buffer = true,
+    gap_x = 0,
+    gap_y = -140,
+    minimum_width = 450,
+    minimum_height = 450,
+    maximum_width = 450,
+    own_window = true,
+    own_window_type = "desktop",
+    own_window_class = "conky-semi",
+    own_window_argb_visual = true,
+    own_window_transparent = true,
+    own_window_argb_value = 100,
+    own_window_hints = "undecorated,sticky,skip_taskbar,skip_pager,below",
+    alignment = "middle_middle",
+    draw_shades = false,
+    draw_outline = false,
+    draw_borders = false,
+    draw_graph_borders = false,
+    override_utf8_locale = true,
+    use_xft = true,
+    font = "DejaVu Sans:size=8",
+    uppercase = false,
+    lua_load = "~/Conky/Scripts/conky_clock_globe.lua",
+    lua_draw_hook_post = "main",
+}
+
+conky.text = [[
+]]
